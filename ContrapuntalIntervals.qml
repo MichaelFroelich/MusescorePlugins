@@ -205,11 +205,11 @@ MuseScore {
               
               if ((voice == 0) && (notes[0].pitch > 83))
                 text.pos.x = 1;
-              if (text.text.charAt(0) == ("P"))
+              if (text.text.charAt(0) == "P")
                 text.color = "#0000FF";
-              else if (text.text.charAt(1) == ("7") || text.text.charAt(1) == ("2"))
+              else if (text.text.charAt(1) == "7" || text.text.charAt(1) == "2")
                 text.color = "#FF0000";
-              else if (text.text.charAt(0) == ("m") || text.text.charAt(0) == ("M"))
+              else if (text.text.charAt(0) == "m" || text.text.charAt(0) == "M")
                 text.color = "#00FF00";
               else
                 text.color = "#800080";
