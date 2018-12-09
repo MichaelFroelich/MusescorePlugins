@@ -64,8 +64,8 @@ MuseScore {
                         var notes = cursor.element.notes;
                         var siggy = cursor.keySignature;
                         if (oldKeySig != siggy) {
-                            var noten = siggy;// - 1;
-                            if (noten < 0) noten += 12;
+                            var noten = siggy - oldKeySig;
+                            if(noten < 0) noten += 12;
                             offsetTuning = chosenTemperament[noten] - equal[noten] + offsetTuning;
                             oldKeySig = siggy;
                         }
