@@ -119,7 +119,7 @@ MuseScore {
     property var johnston: [000.0, 702.0, 203.1, 884.4, 386.3, 1088.3, 582.5, 105.0, 813.7, 315.6, 1017.6, 498.4];
 
 
-    property var chosenTemperament: [];
+    property var chosenTemperament: justintonation;
 
     GridLayout {
         GroupBox {
