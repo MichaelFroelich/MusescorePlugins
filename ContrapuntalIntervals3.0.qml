@@ -2,7 +2,7 @@ import MuseScore 3.0
 
 MuseScore {
   menuPath: "Plugins.Proof Reading.Intervals of Voices"
-  version: "3.0"
+  version: "0.1"
   description: "Check intervals for voices"
   
   function vocalNote(note, voice, staff) {
@@ -10,11 +10,10 @@ MuseScore {
     this.voice = voice;
     this.staff = staff;
   }
-  
+
   function checkInterval(n1, n2) {
     var note1 = n1;
     var note2 = n2;
-    
     if (note2.pitch < note1.pitch) {
       note1 = n2;
       note2 = n1;
@@ -101,7 +100,6 @@ MuseScore {
         if (cursor.element && cursor.element.notes) {
           var notes = cursor.element.notes;
           for (var i = 0; i < notes.length; i++) {
-            if(notes[i].tpc === 0) continue;
             dag.note = notes[i];
             full_chord[idx_note] = dag;
             idx_note++;
@@ -122,7 +120,7 @@ MuseScore {
     if (typeof curScore === 'undefined')
       Qt.quit();
 
-    var ticks =[""];
+    var ticks = [];
     var cursor = curScore.newCursor();
     var startStaff;
     var endStaff;
@@ -159,6 +157,7 @@ MuseScore {
         cursor.voice = voice;
         cursor.staffIdx = staff;
         while (cursor.element && (fullScore || cursor.tick < endTick)) {
+
           if (cursor.element.type === Element.CHORD) {
             var newNotes = getAllCurrentNotes(cursor, startStaff, endStaff);
             notes = filterNotes(notes, newNotes);
@@ -173,14 +172,10 @@ MuseScore {
               
               if(!nextNote.note || !notes[nn].note)
                   continue;
-              var ticker = "";
-              if(notes[nn].note.tick > nextNote.note.tick)
-                ticker = notes[nn].note.track + notes[nn].note.tick + nextNote.note.track + nextNote.note.tick ;
-              else
-                ticker = nextNote.note.track + nextNote.note.tick  + notes[nn].note.track + notes[nn].note.tick ;
-
-              if (ticks.indexOf(ticker.toString()) == -1) {
-                ticks.push(ticker.toString());
+                  
+              var ticker = magPost(notes[nn].note, nextNote.note);
+              if (ticks.indexOf(ticker) == -1) {
+                ticks.push(ticker);
               } else {
                 continue;
               }
@@ -189,22 +184,28 @@ MuseScore {
               text.text = checkInterval(notes[nn].note, nextNote.note);
               var nvoice = getLower(notes[nn], nextNote).voice;
               cursor.staffIdx = notes[nn].staff;
-              
+
               switch (nvoice) {
                 case 0: 
+                  console.log(text.text);
+                  text.offsetY = 10; 
+                  break;
+                case 1: 
+                  text.offsetY = -1; 
+                  break;
+                case 2: 
+                  text.offsetY = 1; 
+                  break;
                 case 3: 
-                  //text.offsetY  = 10; 
-                  text.placement = 1;
+                  text.offsetY = 12; 
                   break;
               }
               if ((cursor.staffIdx - startStaff) % 2
                   && nvoice != 0) 
-                  text.placement = 1;
-              
-              text.fontSize = 6;
+                  text.offsetY += 11;
               
               if ((voice == 0) && (notes[0].pitch > 83))
-                text.offsetX  = 1;
+                text.offsetX = 1;
               if (text.text.charAt(0) == "P")
                 text.color = "#0000FF";
               else if (text.text.charAt(1) == "7" || text.text.charAt(1) == "2")
@@ -234,5 +235,9 @@ MuseScore {
     else {
       return note2;
     }
+  }
+
+  function magPost(one, two) {
+      return (one.posX * two.posX) + (one.posY * two.posY);
   }
 }
