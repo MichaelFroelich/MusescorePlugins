@@ -175,9 +175,9 @@ MuseScore {
                   continue;
               var ticker = "";
               if(notes[nn].note.tick > nextNote.note.tick)
-                ticker = notes[nn].note.track.toString() + notes[nn].note.tick.toString() + nextNote.note.track.toString() + nextNote.note.tick.toString() ;
-             else
-                ticker = nextNote.note.track.toString() + nextNote.note.tick.toString()  + notes[nn].note.track.toString() + notes[nn].note.tick.toString() ;
+                ticker = notes[nn].note.track + notes[nn].note.tick + nextNote.note.track + nextNote.note.tick ;
+              else
+                ticker = nextNote.note.track + nextNote.note.tick  + notes[nn].note.track + notes[nn].note.tick ;
 
               if (ticks.indexOf(ticker.toString()) == -1) {
                 ticks.push(ticker.toString());
